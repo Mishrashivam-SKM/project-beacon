@@ -3,276 +3,453 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Official Government Portal - National Disaster Management Agency. Access services, file applications, and read the latest announcements." />
-  <title>Emergency Operations | National Disaster Management Agency</title>
+  <meta name="description" content="Project Beacon — Emergency Incident Management Portal for the National Disaster Management Agency. Real-time coordination of incidents, resources, and inter-agency response." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Project Beacon | Emergency Incident Management — NDMA</title>
   <link rel="stylesheet" href="assets/css/main.css" />
-  <style>
-    /* Additional utility styles for dynamic components */
-    .gov-banner { background: #0f1a30; border-bottom: 2px solid var(--color-alert-info); height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font-size: 11px; font-weight: 600; color: #fff; text-transform: uppercase; }
-    .classification-badge { background: #7c2d12; color: #fed7aa; padding: 3px 10px; border: 1px solid #9a3412; }
-    .alert-strip { background: #450a0a; border-bottom: 1px solid #991b1b; padding: 7px 24px; font-size: 11.5px; font-weight: 600; color: #fca5a5; display: flex; align-items: center; gap: 10px; display: none; }
-    .alert-strip.active { display: flex; }
-    .alert-strip-dot { width: 8px; height: 8px; background: #f87171; border-radius: 50%; animation: pulse 1s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    
-    .badge { display: inline-block; padding: 2px 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; border: 1px solid; }
-    .badge-critical { background: #1a0a0a; color: #f87171; border-color: #7f1d1d; }
-    .badge-high { background: #1a100a; color: #fb923c; border-color: #7c2d12; }
-    .badge-medium { background: #1a160a; color: #fbbf24; border-color: #78350f; }
-    .badge-low { background: #0a1a0e; color: #4ade80; border-color: #14532d; }
-    
-    .status-reported { color: #f97316; font-weight: 600; text-transform: uppercase; font-size: 12px; }
-    .status-responding { color: #eab308; font-weight: 600; text-transform: uppercase; font-size: 12px; }
-    .status-resolved { color: #22c55e; font-weight: 600; text-transform: uppercase; font-size: 12px; }
-    
-    .system-pill { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border: 1px solid; font-size: 11px; font-weight: bold; }
-    .system-online { background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.3); color: #2e7d32; }
-    .system-offline { background: rgba(248, 113, 113, 0.1); border-color: rgba(248, 113, 113, 0.3); color: #d32f2f; }
-  </style>
 </head>
 <body>
 
-  <!-- ── Government Top Banner ─────────────────────────── -->
+  <!-- ═══════════════════════════════════════
+       GOVERNMENT BANNER
+       ═══════════════════════════════════════ -->
   <div class="gov-banner" role="banner">
-    <div style="display: flex; gap: 12px; align-items: center;">
-      <span>NDMA — Project Beacon</span>
-    </div>
-    <div style="display: flex; gap: 16px; align-items: center;">
-      <div id="system-status" class="system-pill system-offline">Checking API...</div>
-      <span class="classification-badge" title="Data Classification Level">Restricted</span>
-      <span id="banner-clock" class="font-mono"></span>
+    <div class="gov-banner-inner">
+      <div class="gov-org">
+        <div class="gov-seal" aria-hidden="true">⬡</div>
+        National Disaster Management Agency — Project Beacon
+      </div>
+      <div class="gov-banner-right">
+        <span class="classification-tag" title="Data Classification: Restricted">Restricted</span>
+        <span class="live-clock" id="live-clock" aria-live="off"></span>
+      </div>
     </div>
   </div>
 
-  <!-- ── Critical Alert Strip ──────────────────────────── -->
-  <div class="alert-strip" id="critical-alert-strip" role="alert" aria-live="assertive">
-    <span class="alert-strip-dot" aria-hidden="true"></span>
-    CRITICAL INCIDENT ACTIVE — Immediate response required. Check the active incidents grid.
+  <!-- ═══════════════════════════════════════
+       CRITICAL ALERT STRIP
+       ═══════════════════════════════════════ -->
+  <div class="critical-strip" id="critical-strip" role="alert" aria-live="assertive" aria-atomic="true">
+    <span class="critical-strip-dot" aria-hidden="true"></span>
+    CRITICAL INCIDENT ACTIVE — Immediate coordinated response required
   </div>
 
-  <!-- ── Header ────────────────────────────────────────────── -->
-  <header class="header" role="banner">
-    <div class="container header-inner">
-      <a href="/" class="header-brand" aria-label="National Disaster Management Agency Home">
-        <div class="coat-of-arms" aria-hidden="true">🏛</div>
-        <div>
-          <div class="header-title">National Disaster Management Agency</div>
-          <div class="header-subtitle">Emergency Response Coordination Portal</div>
+  <!-- ═══════════════════════════════════════
+       APP SHELL
+       ═══════════════════════════════════════ -->
+  <div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Main navigation">
+
+      <div class="sidebar-brand">
+        <div class="brand-row">
+          <div class="brand-emblem" aria-hidden="true">🚨</div>
+          <div>
+            <div class="brand-name">Beacon</div>
+            <span class="brand-sub">Incident Mgmt Portal</span>
+          </div>
         </div>
-      </a>
-      
-      <nav class="utility-nav" aria-label="Utility navigation">
-        <a href="#incidents">Active Incidents</a>
-        <a href="#resources">Available Resources</a>
-        <a href="#report">Report Emergency</a>
+      </div>
+
+      <div class="api-status online" id="api-status" role="status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="api-status-text">Checking…</span>
+      </div>
+
+      <nav class="nav-section" aria-label="Portal sections">
+        <p class="nav-group-label">Operations</p>
+
+        <a class="nav-link active" id="nav-dashboard" href="#"
+           aria-current="page"
+           onclick="switchView('dashboard'); return false;">
+          <span class="nav-icon" aria-hidden="true">▦</span>
+          Dashboard
+        </a>
+
+        <a class="nav-link" id="nav-incidents" href="#"
+           onclick="switchView('incidents'); return false;">
+          <span class="nav-icon" aria-hidden="true">⚠</span>
+          Incidents
+          <span class="nav-badge" id="critical-badge" aria-label="critical incidents" style="display:none">0</span>
+        </a>
+
+        <a class="nav-link" id="nav-resources" href="#"
+           onclick="switchView('resources'); return false;">
+          <span class="nav-icon" aria-hidden="true">◉</span>
+          Resources
+        </a>
       </nav>
-    </div>
-  </header>
 
-  <main id="main-content" role="main">
+      <div class="sidebar-meta" aria-label="Build info">
+        <div>Build: v1.0.0 — Case Study 47</div>
+        <div>DevOps Sem IV Assignment</div>
+        <div style="margin-top:4px; font-weight:700; color:#8899A6">NDMA Coord. Platform</div>
+      </div>
+    </aside>
 
-    <!-- ── Hero Area ─────────────────────────────────────────── -->
-    <section class="hero" aria-labelledby="hero-heading">
-      <div class="container">
-        <h1 id="hero-heading" class="hero-title">Emergency Response Dashboard & Reporting</h1>
-        <p class="hero-lead">This portal serves as the central hub for monitoring active emergency incidents, dispatching resources, and coordinating inter-agency responses.</p>
-        
-        <div style="margin-top: var(--spacing-lg);">
-           <a href="#report" class="btn btn-primary">Report New Incident</a>
-           <a href="#incidents" class="btn btn-outline" style="margin-left: 16px;">View Active Dashboard</a>
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="main-content">
+
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="topbar-left">
+          <h1 class="topbar-title" id="topbar-title">Dashboard</h1>
+          <span class="topbar-sub" id="topbar-sub">Real-time emergency overview</span>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-danger btn-sm"
+                  id="btn-new-incident"
+                  onclick="openModal('incident')"
+                  aria-label="Report a new emergency incident">
+            + Report Incident
+          </button>
         </div>
       </div>
-    </section>
 
-    <!-- ── Active Incidents Grid ────────────────────────────────── -->
-    <section id="incidents" class="news-section" aria-labelledby="incidents-heading">
-      <div class="container">
-        <h2 id="incidents-heading" class="section-header">Active Emergency Incidents</h2>
-        <div class="news-grid" id="incidents-grid">
-          <!-- Dynamic Incidents Loaded Here -->
-          <p>Loading incident data...</p>
-        </div>
-      </div>
-    </section>
+      <div class="page-body">
 
-    <!-- ── Available Resources Directory ─────────────────────────── -->
-    <section id="resources" class="services-section" aria-labelledby="resources-heading">
-      <div class="container">
-        <h2 id="resources-heading" class="section-header">Available Response Resources Directory</h2>
-        <div class="service-columns" id="resources-directory">
-          <!-- Dynamic Resources Loaded Here -->
-          <p>Loading resource directory...</p>
-        </div>
-      </div>
-    </section>
+        <!-- ════════════════════════════════
+             DASHBOARD VIEW
+             ════════════════════════════════ -->
+        <section class="view active" id="view-dashboard" aria-label="Dashboard overview">
 
-    <!-- ── Report Incident Tracker ─────────────────────────── -->
-    <section id="report" class="application-section" aria-labelledby="report-heading">
-      <div class="container">
-        <h2 id="report-heading" class="section-header">Report an Emergency Incident</h2>
-        
-        <div class="tracker-container">
-          
-          <div class="tracker-steps" aria-label="Reporting progress">
-            <div class="step active" id="step1-indicator">
-              <div class="step-indicator" aria-hidden="true">1</div>
-              <div class="step-label">Basic Details</div>
+          <!-- Stats -->
+          <div class="stats-grid" role="region" aria-label="Summary statistics">
+            <div class="stat-card stat-card-total">
+              <span class="stat-number" id="stat-total">—</span>
+              <span class="stat-label">Total Incidents</span>
             </div>
-            <div class="step" id="step2-indicator">
-              <div class="step-indicator" aria-hidden="true">2</div>
-              <div class="step-label">Location & Desc.</div>
+            <div class="stat-card stat-card-active">
+              <span class="stat-number" id="stat-active">—</span>
+              <span class="stat-label">Active</span>
             </div>
-            <div class="step" id="step3-indicator">
-              <div class="step-indicator" aria-hidden="true">3</div>
-              <div class="step-label">Assign Agencies</div>
+            <div class="stat-card stat-card-critical">
+              <span class="stat-number" id="stat-critical">—</span>
+              <span class="stat-label">Critical</span>
             </div>
-            <div class="step" id="step4-indicator">
-              <div class="step-indicator" aria-hidden="true">4</div>
-              <div class="step-label">Review & Submit</div>
+            <div class="stat-card stat-card-resources">
+              <span class="stat-number" id="stat-resources">—</span>
+              <span class="stat-label">Resources Available</span>
             </div>
           </div>
 
-          <div class="tracker-content" id="tracker-content">
-            <form id="incident-form" onsubmit="event.preventDefault(); nextStep();">
-              
-              <!-- Step 1 -->
-              <div id="step1-content">
-                <h3 style="margin-bottom: 16px; font-size: 20px;">Step 1: Incident Basic Details</h3>
-                <p style="margin-bottom: 24px; color: var(--color-secondary);">Provide the title, type, and severity of the emergency.</p>
-                
-                <div class="form-group">
-                  <label for="incident-title" class="form-label">Incident Title</label>
-                  <input type="text" id="incident-title" class="form-control" required placeholder="e.g. Major Fire at Warehouse" />
-                </div>
-                
-                <div class="form-group">
-                  <label for="incident-type" class="form-label">Type of Emergency</label>
-                  <select id="incident-type" class="form-control" required>
-                    <option value="">Select an option</option>
-                    <option value="fire">Fire</option>
-                    <option value="flood">Flood</option>
-                    <option value="earthquake">Earthquake</option>
-                    <option value="accident">Accident</option>
-                    <option value="medical">Medical Emergency</option>
-                    <option value="hazmat">Hazardous Material</option>
-                    <option value="rescue">Search & Rescue</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label for="incident-severity" class="form-label">Severity Level</label>
-                  <select id="incident-severity" class="form-control" required>
-                    <option value="">Select an option</option>
-                    <option value="critical">Critical — Life threatening, immediate response</option>
-                    <option value="high">High — Urgent response required</option>
-                    <option value="medium">Medium — Standard response</option>
-                    <option value="low">Low — Monitor situation</option>
-                  </select>
-                </div>
-                
-                <div class="form-actions">
-                  <button type="button" class="btn btn-outline" disabled>Previous</button>
-                  <button type="submit" class="btn btn-primary">Save and Continue</button>
-                </div>
-              </div>
-              
-              <!-- Step 2 -->
-              <div id="step2-content" style="display: none;">
-                <h3 style="margin-bottom: 16px; font-size: 20px;">Step 2: Location & Description</h3>
-                <p style="margin-bottom: 24px; color: var(--color-secondary);">Provide the exact address and a detailed description of the situation.</p>
-                
-                <div class="form-group">
-                  <label for="incident-location" class="form-label">Address / Location</label>
-                  <input type="text" id="incident-location" class="form-control" required placeholder="e.g. Sector 4 Industrial Park" />
-                </div>
-
-                <div class="form-group">
-                  <label for="incident-desc" class="form-label">Detailed Description</label>
-                  <textarea id="incident-desc" class="form-control" rows="4" required placeholder="Describe the scale of the incident and any immediate hazards..."></textarea>
-                </div>
-                
-                <div class="form-actions">
-                  <button type="button" class="btn btn-outline" onclick="prevStep()">Previous</button>
-                  <button type="submit" class="btn btn-primary">Save and Continue</button>
-                </div>
-              </div>
-              
-              <!-- Step 3 -->
-              <div id="step3-content" style="display: none;">
-                <h3 style="margin-bottom: 16px; font-size: 20px;">Step 3: Assign Responding Agencies</h3>
-                <p style="margin-bottom: 24px; color: var(--color-secondary);">Select the agencies that need to be dispatched to this incident.</p>
-                
-                <div class="form-group">
-                  <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
-                    <label><input type="checkbox" name="agencies" value="hospital" /> <strong>Hospitals</strong> (Medical response & triage)</label>
-                    <label><input type="checkbox" name="agencies" value="police" /> <strong>Police Department</strong> (Law enforcement & crowd control)</label>
-                    <label><input type="checkbox" name="agencies" value="fire_service" /> <strong>Fire Service</strong> (Fire suppression & hazmat)</label>
-                    <label><input type="checkbox" name="agencies" value="rescue_team" /> <strong>Rescue Team</strong> (Search & rescue operations)</label>
-                    <label><input type="checkbox" name="agencies" value="government" /> <strong>Government Agency</strong> (Policy & funding)</label>
-                  </div>
-                </div>
-                
-                <div class="form-actions">
-                  <button type="button" class="btn btn-outline" onclick="prevStep()">Previous</button>
-                  <button type="submit" class="btn btn-primary">Save and Continue</button>
-                </div>
-              </div>
-              
-              <!-- Step 4 -->
-              <div id="step4-content" style="display: none;">
-                <h3 style="margin-bottom: 16px; font-size: 20px;">Step 4: Review and Submit</h3>
-                <p style="margin-bottom: 24px; color: var(--color-secondary);">Review the incident report below. Clicking submit will immediately notify assigned agencies via the API.</p>
-                
-                <div style="background: var(--color-surface); padding: 16px; margin-bottom: 24px; border: var(--border-width) solid var(--color-border);">
-                   <strong>Status:</strong> Ready to Submit<br>
-                   <em>All sections complete.</em>
-                </div>
-                
-                <div class="form-actions">
-                  <button type="button" class="btn btn-outline" onclick="prevStep()">Previous</button>
-                  <button type="button" class="btn btn-primary" style="background-color: var(--color-alert-error); border-color: var(--color-alert-error);" onclick="submitApplication()">Submit Emergency Report</button>
-                </div>
-              </div>
-              
-              <div id="step-success" style="display: none;">
-                <div style="text-align: center; padding: 40px 0;">
-                  <div class="status-indicator status-success" style="font-size: 24px; margin-bottom: 16px; color: var(--color-alert-success);">Incident Reported Successfully</div>
-                  <p>The incident has been logged in the MongoDB database and agencies have been notified.</p>
-                  <button type="button" class="btn btn-outline" style="margin-top: 24px;" onclick="location.reload()">Report Another Incident</button>
-                </div>
-              </div>
-              
-            </form>
+          <!-- Recent Incidents -->
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title">Recent Incidents</span>
+              <button class="btn btn-outline btn-sm"
+                      onclick="switchView('incidents')"
+                      aria-label="View all incidents">
+                View All Incidents
+              </button>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table" aria-label="Recent incidents list">
+                <thead>
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Severity</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Reported At</th>
+                    <th scope="col"><span class="sr-only">Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody id="recent-tbody">
+                  <tr class="empty-row"><td colspan="7">Loading incidents…</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        
-      </div>
-    </section>
 
-  </main>
+        </section>
 
-  <!-- ── Footer ────────────────────────────────────────────── -->
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-col">
-          <h4>About Project Beacon</h4>
-          <ul>
-            <li><a href="#">Architecture Reference</a></li>
-            <li><a href="#">Disaster Recovery Plan</a></li>
-            <li><a href="#">DevOps Case Study 47</a></li>
-          </ul>
+        <!-- ════════════════════════════════
+             INCIDENTS VIEW
+             ════════════════════════════════ -->
+        <section class="view" id="view-incidents" aria-label="All incidents">
+
+          <div class="filter-bar">
+            <div class="filter-group" role="group" aria-label="Filter controls">
+              <label class="sr-only" for="f-status">Filter by status</label>
+              <select class="filter-select" id="f-status" onchange="loadIncidents()">
+                <option value="">All Statuses</option>
+                <option value="reported">Reported</option>
+                <option value="acknowledged">Acknowledged</option>
+                <option value="responding">Responding</option>
+                <option value="resolved">Resolved</option>
+                <option value="closed">Closed</option>
+              </select>
+
+              <label class="sr-only" for="f-severity">Filter by severity</label>
+              <select class="filter-select" id="f-severity" onchange="loadIncidents()">
+                <option value="">All Severities</option>
+                <option value="critical">Critical</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+
+              <label class="sr-only" for="f-type">Filter by type</label>
+              <select class="filter-select" id="f-type" onchange="loadIncidents()">
+                <option value="">All Types</option>
+                <option value="fire">Fire</option>
+                <option value="flood">Flood</option>
+                <option value="earthquake">Earthquake</option>
+                <option value="accident">Accident</option>
+                <option value="medical">Medical</option>
+                <option value="hazmat">Hazmat</option>
+                <option value="rescue">Rescue</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="openModal('incident')">+ Report Incident</button>
+          </div>
+
+          <div class="panel">
+            <div class="table-wrap">
+              <table class="data-table" aria-label="All incidents">
+                <thead>
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Severity</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Agencies</th>
+                    <th scope="col">Reported At</th>
+                    <th scope="col"><span class="sr-only">Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody id="incidents-tbody">
+                  <tr class="empty-row"><td colspan="8">No incidents found</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ════════════════════════════════
+             RESOURCES VIEW
+             ════════════════════════════════ -->
+        <section class="view" id="view-resources" aria-label="Resource management">
+
+          <div class="filter-bar">
+            <div class="filter-group" role="group" aria-label="Resource filter controls">
+              <label class="sr-only" for="f-res-status">Filter by availability</label>
+              <select class="filter-select" id="f-res-status" onchange="loadResources()">
+                <option value="">All Statuses</option>
+                <option value="available">Available</option>
+                <option value="deployed">Deployed</option>
+                <option value="maintenance">Maintenance</option>
+                <option value="out_of_service">Out of Service</option>
+              </select>
+
+              <label class="sr-only" for="f-res-type">Filter by type</label>
+              <select class="filter-select" id="f-res-type" onchange="loadResources()">
+                <option value="">All Types</option>
+                <option value="ambulance">Ambulance</option>
+                <option value="fire_truck">Fire Truck</option>
+                <option value="police_vehicle">Police Vehicle</option>
+                <option value="helicopter">Helicopter</option>
+                <option value="rescue_boat">Rescue Boat</option>
+                <option value="medical_team">Medical Team</option>
+                <option value="rescue_team">Rescue Team</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('resource')">+ Register Resource</button>
+          </div>
+
+          <div class="resources-grid" id="resources-grid" role="list" aria-label="Resource units">
+            <div class="empty-state">No resources registered yet</div>
+          </div>
+
+        </section>
+
+      </div><!-- /page-body -->
+    </main>
+  </div><!-- /app-shell -->
+
+  <!-- ═══════════════════════════════════════
+       MODAL: REPORT INCIDENT
+       ═══════════════════════════════════════ -->
+  <div class="modal-overlay" id="incident-modal"
+       role="dialog" aria-modal="true" aria-labelledby="incident-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="incident-modal-title">Report New Incident</h2>
+        <button class="modal-close" onclick="closeModal('incident')" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="incident-form" onsubmit="handleIncidentSubmit(event)" novalidate>
+        <div class="form-body">
+
+          <div class="form-group full">
+            <label class="form-label" for="i-title">Incident Title <span class="req" aria-hidden="true">*</span></label>
+            <input class="form-control" type="text" id="i-title" name="title" required
+                   placeholder="e.g. Major Fire at Warehouse District" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="i-type">Type <span class="req" aria-hidden="true">*</span></label>
+            <select class="form-control" id="i-type" name="type" required>
+              <option value="">Select type…</option>
+              <option value="fire">Fire</option>
+              <option value="flood">Flood</option>
+              <option value="earthquake">Earthquake</option>
+              <option value="accident">Accident</option>
+              <option value="medical">Medical Emergency</option>
+              <option value="hazmat">Hazardous Material</option>
+              <option value="rescue">Search &amp; Rescue</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="i-severity">Severity Level <span class="req" aria-hidden="true">*</span></label>
+            <select class="form-control" id="i-severity" name="severity" required>
+              <option value="">Select severity…</option>
+              <option value="critical">Critical — Life Threatening</option>
+              <option value="high">High — Urgent Response</option>
+              <option value="medium">Medium — Standard Response</option>
+              <option value="low">Low — Monitor</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label" for="i-location">Location / Address <span class="req" aria-hidden="true">*</span></label>
+            <input class="form-control" type="text" id="i-location" name="location" required
+                   placeholder="e.g. Sector 4, Near Central Railway Station" />
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label" for="i-desc">Description <span class="req" aria-hidden="true">*</span></label>
+            <textarea class="form-control" id="i-desc" name="description" required rows="3"
+                      placeholder="Describe the nature of the emergency, current conditions, and immediate actions taken…"></textarea>
+          </div>
+
+          <div class="form-group full">
+            <fieldset>
+              <legend class="form-label">Assign Responding Agencies</legend>
+              <div class="checkbox-group" style="margin-top:6px">
+                <label class="checkbox-item"><input type="checkbox" name="agencies" value="hospital" /> Hospital</label>
+                <label class="checkbox-item"><input type="checkbox" name="agencies" value="police" /> Police</label>
+                <label class="checkbox-item"><input type="checkbox" name="agencies" value="fire_service" /> Fire Service</label>
+                <label class="checkbox-item"><input type="checkbox" name="agencies" value="rescue_team" /> Rescue Team</label>
+                <label class="checkbox-item"><input type="checkbox" name="agencies" value="government" /> Government</label>
+              </div>
+            </fieldset>
+          </div>
+
+        </div>
+        <input type="hidden" id="i-edit-id" value="" />
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('incident')">Cancel</button>
+          <button type="submit" class="btn btn-danger" id="i-submit-btn">Submit Report</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       MODAL: REGISTER RESOURCE
+       ═══════════════════════════════════════ -->
+  <div class="modal-overlay" id="resource-modal"
+       role="dialog" aria-modal="true" aria-labelledby="resource-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="resource-modal-title">Register New Resource</h2>
+        <button class="modal-close" onclick="closeModal('resource')" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="resource-form" onsubmit="handleResourceSubmit(event)" novalidate>
+        <div class="form-body">
+
+          <div class="form-group full">
+            <label class="form-label" for="r-name">Unit Name <span class="req" aria-hidden="true">*</span></label>
+            <input class="form-control" type="text" id="r-name" name="name" required
+                   placeholder="e.g. Ambulance Unit Alpha-3" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="r-type">Unit Type <span class="req" aria-hidden="true">*</span></label>
+            <select class="form-control" id="r-type" name="type" required>
+              <option value="">Select type…</option>
+              <option value="ambulance">Ambulance</option>
+              <option value="fire_truck">Fire Truck</option>
+              <option value="police_vehicle">Police Vehicle</option>
+              <option value="helicopter">Helicopter</option>
+              <option value="rescue_boat">Rescue Boat</option>
+              <option value="medical_team">Medical Team</option>
+              <option value="rescue_team">Rescue Team</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="r-status">Current Status</label>
+            <select class="form-control" id="r-status" name="status">
+              <option value="available">Available</option>
+              <option value="deployed">Deployed</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="out_of_service">Out of Service</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label" for="r-agency">Responsible Agency <span class="req" aria-hidden="true">*</span></label>
+            <input class="form-control" type="text" id="r-agency" name="agency" required
+                   placeholder="e.g. City Fire Department" />
+          </div>
+
+        </div>
+        <input type="hidden" id="r-edit-id" value="" />
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('resource')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="r-submit-btn">Register Resource</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       MODAL: UPDATE STATUS
+       ═══════════════════════════════════════ -->
+  <div class="modal-overlay" id="status-modal"
+       role="dialog" aria-modal="true" aria-labelledby="status-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="status-modal-title">Update Incident Status</h2>
+        <button class="modal-close" onclick="closeModal('status')" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="form-body" style="grid-template-columns:1fr">
+        <div class="form-group">
+          <label class="form-label" for="s-status">New Status <span class="req" aria-hidden="true">*</span></label>
+          <select class="form-control" id="s-status">
+            <option value="reported">Reported</option>
+            <option value="acknowledged">Acknowledged</option>
+            <option value="responding">Responding</option>
+            <option value="resolved">Resolved</option>
+            <option value="closed">Closed</option>
+          </select>
         </div>
       </div>
-      <div class="footer-bottom">
-        &copy; 2026 National Disaster Management Agency. Official Project Beacon Portal.
+      <input type="hidden" id="s-incident-id" value="" />
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('status')">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="submitStatusUpdate()">Update Status</button>
       </div>
     </div>
-  </footer>
+  </div>
 
+  <!-- Toast container -->
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- Scripts -->
   <script src="assets/js/api.js"></script>
   <script src="assets/js/ui.js"></script>
   <script src="assets/js/app.js"></script>
+
 </body>
 </html>
