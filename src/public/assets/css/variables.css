@@ -1,93 +1,42 @@
 /* ═══════════════════════════════════════════════════════
-   PROJECT BEACON — National Disaster Management Agency
-   Design Tokens & CSS Custom Properties
-   Government Edition — WCAG 2.1 AA Compliant
+   GOVERNMENT PORTAL UI
+   Strict, Formal, and Authoritative Design Tokens
+   WCAG 2.1 AA Compliant
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  /* ── Government Brand Palette ── */
-  --gov-navy:        #1a2744;
-  --gov-navy-deep:   #0f1a30;
-  --gov-navy-light:  #253359;
-  --gov-blue:        #1d4ed8;
-  --gov-blue-light:  #2563eb;
-  --gov-blue-muted:  #1e3a6e;
-  --gov-white:       #ffffff;
-
-  /* ── Neutral Grays ── */
-  --gray-50:   #f8fafc;
-  --gray-100:  #f1f5f9;
-  --gray-200:  #e2e8f0;
-  --gray-300:  #cbd5e1;
-  --gray-400:  #94a3b8;
-  --gray-500:  #64748b;
-  --gray-600:  #475569;
-  --gray-700:  #334155;
-  --gray-800:  #1e293b;
-  --gray-900:  #0f172a;
-
-  /* ── Semantic: Severity ── */
-  --severity-critical-bg:  #1a0a0a;
-  --severity-critical-text: #f87171;
-  --severity-critical-border: #7f1d1d;
-  --severity-high-bg:   #1a100a;
-  --severity-high-text: #fb923c;
-  --severity-high-border: #7c2d12;
-  --severity-medium-bg:   #1a160a;
-  --severity-medium-text: #fbbf24;
-  --severity-medium-border: #78350f;
-  --severity-low-bg:    #0a1a0e;
-  --severity-low-text:  #4ade80;
-  --severity-low-border: #14532d;
-
-  /* ── Semantic: Status ── */
-  --status-reported:    #fb923c;
-  --status-acknowledged:#60a5fa;
-  --status-responding:  #fbbf24;
-  --status-resolved:    #4ade80;
-  --status-closed:      #94a3b8;
-
-  /* ── UI Surface Colors ── */
-  --surface-base:    #0d1421;
-  --surface-raised:  #111d2e;
-  --surface-overlay: #162033;
-  --surface-hover:   rgba(255,255,255,0.03);
-
-  /* ── Borders ── */
-  --border-subtle:   rgba(255,255,255,0.06);
-  --border-default:  rgba(255,255,255,0.10);
-  --border-strong:   rgba(255,255,255,0.18);
-  --border-accent:   var(--gov-blue);
-
-  /* ── Text ── */
-  --text-primary:    #e2e8f0;
-  --text-secondary:  #94a3b8;
-  --text-muted:      #64748b;
-  --text-inverse:    #0f172a;
-  --text-accent:     #93c5fd;
-
-  /* ── Shadows ── */
-  --shadow-sm:  0 1px 3px rgba(0,0,0,0.4);
-  --shadow-md:  0 4px 16px rgba(0,0,0,0.5);
-  --shadow-lg:  0 12px 40px rgba(0,0,0,0.6);
-
-  /* ── Layout ── */
-  --sidebar-w:      260px;
-  --topbar-h:       56px;
-  --banner-h:       40px;
-
-  /* ── Shape ── */
-  --radius-xs: 3px;
-  --radius-sm: 5px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-
-  /* ── Transitions ── */
-  --t-fast:  120ms ease;
-  --t-base:  220ms ease;
-  --t-slow:  360ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* ── Strict Conservative Palette ── */
+  --color-primary: #0B0C10;     /* Deep navy blue */
+  --color-secondary: #1F2833;   /* Dark slate */
+  --color-tertiary: #C5C6C7;    /* Light silver/gray */
+  --color-bg: #FFFFFF;          /* Stark white */
+  --color-surface: #F4F6F8;     /* Off-white for distinct sections */
+  
+  /* ── Alert Colors (Strictly for status) ── */
+  --color-alert-error: #D32F2F;   /* Red */
+  --color-alert-success: #2E7D32; /* Green */
+  --color-alert-warning: #F57C00; /* Amber */
+  --color-alert-info: #1976D2;    /* Blue */
 
   /* ── Typography ── */
-  --font-body: 'Source Sans 3', 'Noto Sans', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-family: 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  --font-size-base: 16px;
+  --line-height-base: 1.6;
+
+  /* ── Borders & Shapes ── */
+  --border-width: 2px;
+  --border-color: #1F2833;
+  --border-radius: 0px; /* No playful rounded corners */
+
+  /* ── Layout ── */
+  --container-width: 1200px;
+  --header-height: 90px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 32px;
+  --spacing-xl: 64px;
+
+  /* ── Focus ── */
+  --focus-ring: 3px solid #1976D2;
+  --focus-offset: 2px;
 }
