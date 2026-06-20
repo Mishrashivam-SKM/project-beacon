@@ -1,0 +1,27 @@
+{
+  "name": "project-beacon",
+  "version": "1.0.0",
+  "description": "Emergency Response Coordination Platform - Project Beacon",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --forceExit --detectOpenHandles"
+  },
+  "keywords": ["emergency", "response", "coordination", "devops"],
+  "author": "Shivam Mishra",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5",
+    "morgan": "^1.10.0",
+    "prom-client": "^15.1.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0"
+  }
+}

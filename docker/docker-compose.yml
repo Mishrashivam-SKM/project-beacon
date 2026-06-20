@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  beacon-app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: beacon-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      # Note: The .env file in the root will provide MONGODB_URI
+    env_file:
+      - ../.env
+    restart: unless-stopped
+    networks:
+      - beacon-network
+
+networks:
+  beacon-network:
+    driver: bridge
