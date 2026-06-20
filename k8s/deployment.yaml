@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beacon-app
+  namespace: beacon
+  labels:
+    app: beacon-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: beacon-app
+  template:
+    metadata:
+      labels:
+        app: beacon-app
+    spec:
+      containers:
+        - name: beacon-app
+          image: shivammishra/project-beacon:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: beacon-config
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10

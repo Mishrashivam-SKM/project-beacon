@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: beacon-config
+  namespace: beacon
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  # In a production environment, database credentials should be stored in a K8s Secret or Vault
+  # We are keeping it here for simplicity of the college project demonstration
+  MONGODB_URI: "mongodb+srv://2024shivamm_db_user:h3f2OPJfqZLUCyVQ@cluster0.dncd7mt.mongodb.net/beacon?appName=Cluster0"
