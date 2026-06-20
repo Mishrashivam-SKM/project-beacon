@@ -1,80 +1,86 @@
-/* ui.js — Pure rendering helpers. No fetch calls, no business logic. */
+/* ui.js — Pure rendering helpers, no business logic */
 
 const UI = {
-
-  /* ── Toast ── */
-  toast(msg, type = 'info') {
-    const wrap = document.getElementById('toast-container');
+  /* ── Toast Notifications ── */
+  toast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
     const el = document.createElement('div');
     el.className = `toast ${type}`;
-    el.setAttribute('role', 'alert');
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
 
-    const icon = { success: '✓', error: '✕', warning: '⚠', info: 'ℹ' }[type] || 'ℹ';
-    el.innerHTML = `<strong style="flex-shrink:0">${icon}</strong><span>${msg}</span>`;
-    wrap.appendChild(el);
+    const icons = { success: '✓', error: '✕', warning: '⚠', info: 'ℹ' };
+    el.innerHTML = `<span style="flex-shrink:0;font-weight:700">${icons[type] || 'ℹ'}</span><span>${message}</span>`;
+    container.appendChild(el);
 
     setTimeout(() => {
-      el.style.transition = 'opacity .3s';
+      el.style.animation = 'none';
       el.style.opacity = '0';
-      setTimeout(() => el.remove(), 320);
-    }, 3800);
+      el.style.transition = 'opacity 0.3s ease';
+      setTimeout(() => el.remove(), 300);
+    }, 3500);
   },
 
-  /* ── Severity badge — matches Incident.severity enum ── */
-  severity(s) {
-    const map = { critical: 'Critical', high: 'High', medium: 'Medium', low: 'Low' };
-    return `<span class="badge badge-${s}" aria-label="Severity: ${s}">${map[s] || s}</span>`;
+  /* ── Severity Badge ── */
+  severityBadge(severity) {
+    const labels = { critical: 'Critical', high: 'High', medium: 'Medium', low: 'Low' };
+    return `<span class="badge badge-${severity}">${labels[severity] || severity}</span>`;
   },
 
-  /* ── Status badge — matches Incident.status enum ── */
-  status(s) {
-    const map = {
+  /* ── Status Badge ── */
+  statusBadge(status) {
+    const labels = {
       reported: 'Reported', acknowledged: 'Acknowledged',
       responding: 'Responding', resolved: 'Resolved', closed: 'Closed',
     };
-    return `<span class="badge badge-${s}" aria-label="Status: ${s}">${map[s] || s}</span>`;
+    return `<span class="badge badge-${status}">${labels[status] || status}</span>`;
   },
 
-  /* ── Resource status badge — matches Resource.status enum ── */
-  resourceStatus(s) {
-    const map = {
+  /* ── Resource Status Badge ── */
+  resourceStatusBadge(status) {
+    const labels = {
       available: 'Available', deployed: 'Deployed',
       maintenance: 'Maintenance', out_of_service: 'Out of Service',
     };
-    return `<span class="badge badge-${s}">${map[s] || s}</span>`;
+    return `<span class="badge badge-${status}">${labels[status] || status}</span>`;
   },
 
-  /* ── Type icon — maps to Incident.type enum ── */
-  typeIcon(t) {
+  /* ── Type Label ── */
+  typeIcon(type) {
     const icons = {
-      fire: '🔥', flood: '🌊', earthquake: '🏚',
-      accident: '💥', medical: '🏥', hazmat: '☣',
-      rescue: '🆘', other: '📌',
+      fire: '🔥', flood: '🌊', earthquake: '🏚', accident: '💥',
+      medical: '🏥', hazmat: '☣', rescue: '🆘', other: '📌',
     };
-    return icons[t] || '📌';
+    return icons[type] || '📌';
   },
 
-  /* ── Resource type icon — maps to Resource.type enum ── */
-  resourceIcon(t) {
+  /* ── Resource Type Icon ── */
+  resourceIcon(type) {
     const icons = {
       ambulance: '🚑', fire_truck: '🚒', police_vehicle: '🚔',
       helicopter: '🚁', rescue_boat: '🚤',
       medical_team: '👨‍⚕️', rescue_team: '🦺', other: '📌',
     };
-    return icons[t] || '📌';
+    return icons[type] || '📌';
   },
 
-  /* ── Date formatting ── */
-  date(str) {
-    if (!str) return '—';
-    return new Date(str).toLocaleString('en-IN', {
+  /* ── Format Date ── */
+  formatDate(dateStr) {
+    if (!dateStr) return '—';
+    return new Date(dateStr).toLocaleString('en-IN', {
       day: '2-digit', month: 'short', year: 'numeric',
       hour: '2-digit', minute: '2-digit', hour12: true,
     });
   },
 
-  /* ── Readable type label ── */
-  typeLabel(t) {
-    return (t || '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  /* ── Critical Alert Strip ── */
+  setCriticalAlert(hasCritical) {
+    const strip = document.getElementById('critical-alert-strip');
+    if (!strip) return;
+    if (hasCritical) {
+      strip.classList.add('active');
+    } else {
+      strip.classList.remove('active');
+    }
   },
 };
