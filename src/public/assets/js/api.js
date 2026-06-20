@@ -1,6 +1,4 @@
-/* api.js — All HTTP calls to the backend API */
-
-const BASE_URL = '';
+/* api.js — All HTTP calls to the backend REST API */
 
 const API = {
   /* ── Incidents ── */
@@ -8,12 +6,13 @@ const API = {
     const params = new URLSearchParams(
       Object.fromEntries(Object.entries(filters).filter(([, v]) => v))
     );
-    const res = await fetch(`${BASE_URL}/api/incidents?${params}`);
+    const res = await fetch(`/api/incidents?${params}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return res.json();
   },
 
   async createIncident(data) {
-    const res = await fetch(`${BASE_URL}/api/incidents`, {
+    const res = await fetch('/api/incidents', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -22,7 +21,7 @@ const API = {
   },
 
   async updateIncident(id, data) {
-    const res = await fetch(`${BASE_URL}/api/incidents/${id}`, {
+    const res = await fetch(`/api/incidents/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -31,7 +30,7 @@ const API = {
   },
 
   async deleteIncident(id) {
-    const res = await fetch(`${BASE_URL}/api/incidents/${id}`, { method: 'DELETE' });
+    const res = await fetch(`/api/incidents/${id}`, { method: 'DELETE' });
     return res.json();
   },
 
@@ -40,12 +39,13 @@ const API = {
     const params = new URLSearchParams(
       Object.fromEntries(Object.entries(filters).filter(([, v]) => v))
     );
-    const res = await fetch(`${BASE_URL}/api/resources?${params}`);
+    const res = await fetch(`/api/resources?${params}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return res.json();
   },
 
   async createResource(data) {
-    const res = await fetch(`${BASE_URL}/api/resources`, {
+    const res = await fetch('/api/resources', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -54,7 +54,7 @@ const API = {
   },
 
   async updateResource(id, data) {
-    const res = await fetch(`${BASE_URL}/api/resources/${id}`, {
+    const res = await fetch(`/api/resources/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -63,14 +63,14 @@ const API = {
   },
 
   async deleteResource(id) {
-    const res = await fetch(`${BASE_URL}/api/resources/${id}`, { method: 'DELETE' });
+    const res = await fetch(`/api/resources/${id}`, { method: 'DELETE' });
     return res.json();
   },
 
   /* ── Health ── */
-  async healthCheck() {
+  async health() {
     try {
-      const res = await fetch(`${BASE_URL}/api/health`);
+      const res = await fetch('/api/health');
       return res.ok;
     } catch {
       return false;

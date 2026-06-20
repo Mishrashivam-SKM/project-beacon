@@ -1,42 +1,73 @@
 /* ═══════════════════════════════════════════════════════
-   GOVERNMENT PORTAL UI
-   Strict, Formal, and Authoritative Design Tokens
-   WCAG 2.1 AA Compliant
+   PROJECT BEACON — Emergency Incident Management Portal
+   Government Design System — WCAG 2.1 AA
+   Conservative, authoritative, high-contrast palette
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  /* ── Strict Conservative Palette ── */
-  --color-primary: #0B0C10;     /* Deep navy blue */
-  --color-secondary: #1F2833;   /* Dark slate */
-  --color-tertiary: #C5C6C7;    /* Light silver/gray */
-  --color-bg: #FFFFFF;          /* Stark white */
-  --color-surface: #F4F6F8;     /* Off-white for distinct sections */
-  
-  /* ── Alert Colors (Strictly for status) ── */
-  --color-alert-error: #D32F2F;   /* Red */
-  --color-alert-success: #2E7D32; /* Green */
-  --color-alert-warning: #F57C00; /* Amber */
-  --color-alert-info: #1976D2;    /* Blue */
+  /* ── Core Brand ── */
+  --navy:        #0B0C10;
+  --navy-mid:    #1F2833;
+  --navy-light:  #2C3E50;
+  --white:       #FFFFFF;
+  --off-white:   #F4F6F8;
+  --silver:      #C5C6C7;
+  --silver-dark: #8899A6;
+
+  /* ── Alert / Semantic (status indicators only) ── */
+  --alert-critical: #C62828;
+  --alert-high:     #E65100;
+  --alert-medium:   #F57F17;
+  --alert-low:      #2E7D32;
+  --alert-blue:     #1565C0;
+  --alert-neutral:  #546E7A;
+
+  --alert-critical-bg: #FFEBEE;
+  --alert-high-bg:     #FFF3E0;
+  --alert-medium-bg:   #FFFDE7;
+  --alert-low-bg:      #E8F5E9;
+  --alert-blue-bg:     #E3F2FD;
+
+  /* ── Status: Incident lifecycle ── */
+  --s-reported:     #E65100;
+  --s-acknowledged: #1565C0;
+  --s-responding:   #F57F17;
+  --s-resolved:     #2E7D32;
+  --s-closed:       #546E7A;
+
+  /* ── Resource status ── */
+  --r-available:    #2E7D32;
+  --r-deployed:     #F57F17;
+  --r-maintenance:  #1565C0;
+  --r-oos:          #C62828;
+
+  /* ── Surfaces ── */
+  --surface:        #FFFFFF;
+  --surface-raised: #F4F6F8;
+  --surface-inset:  #ECEFF1;
+
+  /* ── Borders ── */
+  --border:         #CBD5E0;
+  --border-strong:  #1F2833;
+  --border-focus:   #1565C0;
 
   /* ── Typography ── */
-  --font-family: 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  --font-size-base: 16px;
-  --line-height-base: 1.6;
-
-  /* ── Borders & Shapes ── */
-  --border-width: 2px;
-  --border-color: #1F2833;
-  --border-radius: 0px; /* No playful rounded corners */
+  --font: 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  --font-size:      16px;
+  --line-height:    1.6;
 
   /* ── Layout ── */
-  --container-width: 1200px;
-  --header-height: 90px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 32px;
-  --spacing-xl: 64px;
+  --sidebar-w:    260px;
+  --topbar-h:     56px;
+  --banner-h:     38px;
 
-  /* ── Focus ── */
-  --focus-ring: 3px solid #1976D2;
-  --focus-offset: 2px;
+  /* ── Shape ── NO rounded corners for government UI ── */
+  --radius: 0px;
+
+  /* ── Shadows ── flat, minimal ── */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.12);
+  --shadow-md: 0 2px 8px rgba(0,0,0,.15);
+
+  /* ── Transition ── */
+  --t: 150ms ease;
 }
