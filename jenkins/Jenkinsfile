@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        PATH = "/opt/homebrew/bin:/usr/local/bin:${env.PATH}"
         DOCKER_IMAGE = 'shivammishra/project-beacon'
         DOCKER_TAG = "v${env.BUILD_NUMBER}"
         // In a real environment, you'd use credentials plugin
