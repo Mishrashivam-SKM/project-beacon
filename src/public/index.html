@@ -3,353 +3,462 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Project Beacon - Emergency Response Coordination Platform for real-time incident management and resource tracking." />
-  <title>Project Beacon — Emergency Response Coordination</title>
+  <meta name="description" content="Project Beacon — National Disaster Management Agency. Emergency Response Coordination Platform for real-time incident management and resource deployment." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Project Beacon | National Disaster Management Agency</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 <body>
-  <!-- ═══════════════════════════════════════════ -->
-  <!-- SIDEBAR NAVIGATION                          -->
-  <!-- ═══════════════════════════════════════════ -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="logo">
-        <span class="logo-icon">🚨</span>
-        <div>
-          <h1 class="logo-text">BEACON</h1>
-          <span class="logo-sub">Emergency Response</span>
-        </div>
-      </div>
+
+  <!-- ═══════════════════════════════════════════════
+       GOVERNMENT TOP BANNER
+       ═══════════════════════════════════════════════ -->
+  <div class="gov-banner" role="banner">
+    <div class="gov-banner-left">
+      <div class="gov-emblem" aria-hidden="true">⬡</div>
+      <span class="gov-banner-org">National Disaster Management Agency — Project Beacon</span>
     </div>
-    <nav class="sidebar-nav">
-      <a href="#" class="nav-item active" data-view="dashboard" id="nav-dashboard">
-        <span class="nav-icon">📊</span>
-        <span>Dashboard</span>
-      </a>
-      <a href="#" class="nav-item" data-view="incidents" id="nav-incidents">
-        <span class="nav-icon">🔥</span>
-        <span>Incidents</span>
-      </a>
-      <a href="#" class="nav-item" data-view="resources" id="nav-resources">
-        <span class="nav-icon">🚑</span>
-        <span>Resources</span>
-      </a>
-    </nav>
-    <div class="sidebar-footer">
-      <div class="system-status">
-        <span class="status-dot online" id="status-dot"></span>
-        <span class="status-text" id="status-text">System Online</span>
-      </div>
+    <div class="gov-banner-right">
+      <span class="classification-badge" title="Data Classification Level">Restricted</span>
+      <span class="banner-clock font-mono" id="banner-clock" aria-live="off"></span>
     </div>
-  </aside>
+  </div>
 
-  <!-- ═══════════════════════════════════════════ -->
-  <!-- MAIN CONTENT AREA                           -->
-  <!-- ═══════════════════════════════════════════ -->
-  <main class="main-content">
-    <!-- Top Bar -->
-    <header class="top-bar">
-      <div class="top-bar-left">
-        <h2 class="page-title" id="page-title">Dashboard</h2>
-        <span class="page-subtitle" id="page-subtitle">Real-time emergency overview</span>
-      </div>
-      <div class="top-bar-right">
-        <span class="clock" id="clock"></span>
-        <button class="btn btn-danger btn-glow" id="btn-new-incident" onclick="openModal('incident')">
-          + New Incident
-        </button>
-      </div>
-    </header>
+  <!-- ═══════════════════════════════════════════════
+       CRITICAL ALERT STRIP (hidden by default)
+       ═══════════════════════════════════════════════ -->
+  <div class="alert-strip" id="critical-alert-strip" role="alert" aria-live="assertive">
+    <span class="alert-strip-dot" aria-hidden="true"></span>
+    CRITICAL INCIDENT ACTIVE — Immediate response required. Check the Incidents tab.
+  </div>
 
-    <!-- ── DASHBOARD VIEW ── -->
-    <section class="view active" id="view-dashboard">
-      <!-- Stats Cards Row -->
-      <div class="stats-grid">
-        <div class="stat-card stat-total" id="stat-total-incidents">
-          <div class="stat-icon">📋</div>
-          <div class="stat-info">
-            <span class="stat-number" id="total-incidents">0</span>
-            <span class="stat-label">Total Incidents</span>
-          </div>
-        </div>
-        <div class="stat-card stat-active" id="stat-active-incidents">
-          <div class="stat-icon">⚡</div>
-          <div class="stat-info">
-            <span class="stat-number" id="active-incidents">0</span>
-            <span class="stat-label">Active</span>
-          </div>
-        </div>
-        <div class="stat-card stat-critical" id="stat-critical-incidents">
-          <div class="stat-icon">🔴</div>
-          <div class="stat-info">
-            <span class="stat-number" id="critical-incidents">0</span>
-            <span class="stat-label">Critical</span>
-          </div>
-        </div>
-        <div class="stat-card stat-resources" id="stat-available-resources">
-          <div class="stat-icon">🚑</div>
-          <div class="stat-info">
-            <span class="stat-number" id="available-resources">0</span>
-            <span class="stat-label">Resources Available</span>
+  <!-- ═══════════════════════════════════════════════
+       APP SHELL
+       ═══════════════════════════════════════════════ -->
+  <div class="app-shell">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar" aria-label="Main navigation">
+
+      <div class="sidebar-brand">
+        <div class="brand-lockup">
+          <div class="brand-icon" aria-hidden="true">🚨</div>
+          <div>
+            <div class="brand-name">Beacon</div>
+            <span class="brand-sub">Emergency Coord. Platform</span>
           </div>
         </div>
       </div>
 
-      <!-- Recent Incidents Table -->
-      <div class="card">
-        <div class="card-header">
-          <h3>Recent Incidents</h3>
-          <button class="btn btn-sm btn-outline" onclick="switchView('incidents')">View All</button>
-        </div>
-        <div class="table-container">
-          <table class="data-table" id="recent-incidents-table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Type</th>
-                <th>Severity</th>
-                <th>Status</th>
-                <th>Location</th>
-                <th>Reported</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="recent-incidents-body">
-              <tr class="empty-row">
-                <td colspan="7">No incidents reported yet</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="system-status-pill online" id="system-status-pill" role="status">
+        <span class="status-indicator" aria-hidden="true"></span>
+        <span id="system-status-text">Checking…</span>
       </div>
-    </section>
 
-    <!-- ── INCIDENTS VIEW ── -->
-    <section class="view" id="view-incidents">
-      <div class="view-controls">
-        <div class="filter-group">
-          <select id="filter-status" class="filter-select" onchange="loadIncidents()">
-            <option value="">All Statuses</option>
-            <option value="reported">Reported</option>
-            <option value="acknowledged">Acknowledged</option>
-            <option value="responding">Responding</option>
-            <option value="resolved">Resolved</option>
-            <option value="closed">Closed</option>
-          </select>
-          <select id="filter-severity" class="filter-select" onchange="loadIncidents()">
-            <option value="">All Severities</option>
-            <option value="critical">Critical</option>
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-          <select id="filter-type" class="filter-select" onchange="loadIncidents()">
-            <option value="">All Types</option>
-            <option value="fire">Fire</option>
-            <option value="flood">Flood</option>
-            <option value="earthquake">Earthquake</option>
-            <option value="accident">Accident</option>
-            <option value="medical">Medical</option>
-            <option value="hazmat">Hazmat</option>
-            <option value="rescue">Rescue</option>
-            <option value="other">Other</option>
-          </select>
+      <nav class="sidebar-nav" aria-label="Application navigation">
+        <div class="nav-section">
+          <p class="nav-section-label">Operations</p>
+          <a class="nav-link active"
+             id="nav-dashboard"
+             href="#"
+             role="button"
+             aria-current="page"
+             onclick="switchView('dashboard'); return false;">
+            <span class="nav-icon" aria-hidden="true">▦</span>
+            Dashboard
+          </a>
+          <a class="nav-link"
+             id="nav-incidents"
+             href="#"
+             role="button"
+             onclick="switchView('incidents'); return false;">
+            <span class="nav-icon" aria-hidden="true">⚠</span>
+            Incidents
+          </a>
+          <a class="nav-link"
+             id="nav-resources"
+             href="#"
+             role="button"
+             onclick="switchView('resources'); return false;">
+            <span class="nav-icon" aria-hidden="true">◉</span>
+            Resources
+          </a>
         </div>
-        <button class="btn btn-danger btn-glow" onclick="openModal('incident')">+ New Incident</button>
-      </div>
-      <div class="card">
-        <div class="table-container">
-          <table class="data-table" id="incidents-table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Type</th>
-                <th>Severity</th>
-                <th>Status</th>
-                <th>Location</th>
-                <th>Agencies</th>
-                <th>Reported</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="incidents-body">
-              <tr class="empty-row">
-                <td colspan="8">No incidents found</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+      </nav>
 
-    <!-- ── RESOURCES VIEW ── -->
-    <section class="view" id="view-resources">
-      <div class="view-controls">
-        <div class="filter-group">
-          <select id="filter-resource-status" class="filter-select" onchange="loadResources()">
-            <option value="">All Statuses</option>
-            <option value="available">Available</option>
-            <option value="deployed">Deployed</option>
-            <option value="maintenance">Maintenance</option>
-            <option value="out_of_service">Out of Service</option>
-          </select>
-          <select id="filter-resource-type" class="filter-select" onchange="loadResources()">
-            <option value="">All Types</option>
-            <option value="ambulance">Ambulance</option>
-            <option value="fire_truck">Fire Truck</option>
-            <option value="police_vehicle">Police Vehicle</option>
-            <option value="helicopter">Helicopter</option>
-            <option value="rescue_boat">Rescue Boat</option>
-            <option value="medical_team">Medical Team</option>
-            <option value="rescue_team">Rescue Team</option>
-          </select>
-        </div>
-        <button class="btn btn-primary" onclick="openModal('resource')">+ Add Resource</button>
+      <div class="sidebar-meta">
+        <div class="sidebar-meta-item">Build: v1.0.0</div>
+        <div class="sidebar-meta-item">Case Study 47</div>
+        <div class="sidebar-meta-item" style="margin-top:4px;color:var(--gov-blue);font-weight:600">DevOps Sem IV</div>
       </div>
-      <div class="resources-grid" id="resources-grid">
-        <div class="empty-state">
-          <span class="empty-icon">🚑</span>
-          <p>No resources registered yet</p>
-        </div>
-      </div>
-    </section>
-  </main>
 
-  <!-- ═══════════════════════════════════════════ -->
-  <!-- MODAL: CREATE/EDIT INCIDENT                 -->
-  <!-- ═══════════════════════════════════════════ -->
-  <div class="modal-overlay" id="incident-modal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="incident-modal-title">Report New Incident</h3>
-        <button class="modal-close" onclick="closeModal('incident')">&times;</button>
+    </aside>
+
+    <!-- ── MAIN CONTENT ── -->
+    <main class="main-content" id="main-content">
+
+      <!-- Top Bar -->
+      <div class="topbar">
+        <div class="topbar-left">
+          <h1 class="topbar-title" id="topbar-title">Dashboard</h1>
+          <span class="topbar-breadcrumb" id="topbar-breadcrumb">Real-time overview</span>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-danger btn-sm"
+                  id="btn-new-incident"
+                  onclick="openModal('incident')"
+                  aria-label="Report new emergency incident">
+            + New Incident
+          </button>
+        </div>
       </div>
-      <form id="incident-form" onsubmit="handleIncidentSubmit(event)">
-        <div class="form-grid">
-          <div class="form-group full-width">
-            <label for="incident-title">Title *</label>
-            <input type="text" id="incident-title" name="title" required placeholder="e.g., Major Fire at Warehouse District" />
-          </div>
-          <div class="form-group">
-            <label for="incident-type">Type *</label>
-            <select id="incident-type" name="type" required>
-              <option value="">Select type...</option>
-              <option value="fire">🔥 Fire</option>
-              <option value="flood">🌊 Flood</option>
-              <option value="earthquake">🏚️ Earthquake</option>
-              <option value="accident">💥 Accident</option>
-              <option value="medical">🏥 Medical</option>
-              <option value="hazmat">☣️ Hazmat</option>
-              <option value="rescue">🆘 Rescue</option>
-              <option value="other">📌 Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="incident-severity">Severity *</label>
-            <select id="incident-severity" name="severity" required>
-              <option value="">Select severity...</option>
-              <option value="critical">🔴 Critical</option>
-              <option value="high">🟠 High</option>
-              <option value="medium">🟡 Medium</option>
-              <option value="low">🟢 Low</option>
-            </select>
-          </div>
-          <div class="form-group full-width">
-            <label for="incident-location">Location Address *</label>
-            <input type="text" id="incident-location" name="location" required placeholder="e.g., 123 Main Street, Downtown" />
-          </div>
-          <div class="form-group full-width">
-            <label for="incident-description">Description *</label>
-            <textarea id="incident-description" name="description" required rows="3" placeholder="Describe the emergency situation..."></textarea>
-          </div>
-          <div class="form-group full-width">
-            <label>Assign Agencies</label>
-            <div class="checkbox-group">
-              <label class="checkbox-label">
-                <input type="checkbox" name="agencies" value="hospital" /> 🏥 Hospital
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="agencies" value="police" /> 👮 Police
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="agencies" value="fire_service" /> 🚒 Fire Service
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="agencies" value="rescue_team" /> 🆘 Rescue Team
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="agencies" value="government" /> 🏛️ Government
-              </label>
+
+      <div class="page-body">
+
+        <!-- ══════════════════════════════════════════
+             DASHBOARD VIEW
+             ══════════════════════════════════════════ -->
+        <section class="view active" id="view-dashboard" aria-label="Dashboard overview">
+
+          <!-- Stat Cards -->
+          <div class="stats-row" role="region" aria-label="Summary statistics">
+            <div class="stat-card stat-card-total">
+              <span class="stat-number" id="stat-total">—</span>
+              <span class="stat-label">Total Incidents</span>
+            </div>
+            <div class="stat-card stat-card-active">
+              <span class="stat-number" id="stat-active">—</span>
+              <span class="stat-label">Active</span>
+            </div>
+            <div class="stat-card stat-card-critical">
+              <span class="stat-number" id="stat-critical">—</span>
+              <span class="stat-label">Critical</span>
+            </div>
+            <div class="stat-card stat-card-resources">
+              <span class="stat-number" id="stat-resources">—</span>
+              <span class="stat-label">Resources Available</span>
             </div>
           </div>
+
+          <!-- Recent Incidents -->
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title">Recent Incidents</span>
+              <button class="btn btn-outline btn-sm"
+                      onclick="switchView('incidents')"
+                      aria-label="View all incidents">
+                View All
+              </button>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table" aria-label="Recent incidents">
+                <thead>
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Severity</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Reported At</th>
+                    <th scope="col"><span class="sr-only">Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody id="recent-incidents-body">
+                  <tr class="empty-row">
+                    <td colspan="7">No incidents reported yet</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ══════════════════════════════════════════
+             INCIDENTS VIEW
+             ══════════════════════════════════════════ -->
+        <section class="view" id="view-incidents" aria-label="Incident management">
+
+          <div class="filter-bar">
+            <div class="filter-group" role="group" aria-label="Filter incidents">
+              <label class="sr-only" for="filter-status">Filter by status</label>
+              <select id="filter-status" class="filter-select" onchange="loadIncidents()">
+                <option value="">All Statuses</option>
+                <option value="reported">Reported</option>
+                <option value="acknowledged">Acknowledged</option>
+                <option value="responding">Responding</option>
+                <option value="resolved">Resolved</option>
+                <option value="closed">Closed</option>
+              </select>
+
+              <label class="sr-only" for="filter-severity">Filter by severity</label>
+              <select id="filter-severity" class="filter-select" onchange="loadIncidents()">
+                <option value="">All Severities</option>
+                <option value="critical">Critical</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+
+              <label class="sr-only" for="filter-type">Filter by type</label>
+              <select id="filter-type" class="filter-select" onchange="loadIncidents()">
+                <option value="">All Types</option>
+                <option value="fire">Fire</option>
+                <option value="flood">Flood</option>
+                <option value="earthquake">Earthquake</option>
+                <option value="accident">Accident</option>
+                <option value="medical">Medical</option>
+                <option value="hazmat">Hazmat</option>
+                <option value="rescue">Rescue</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="openModal('incident')">+ Report Incident</button>
+          </div>
+
+          <div class="panel">
+            <div class="table-wrap">
+              <table class="data-table" aria-label="All incidents">
+                <thead>
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Severity</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Agencies</th>
+                    <th scope="col">Reported At</th>
+                    <th scope="col"><span class="sr-only">Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody id="incidents-body">
+                  <tr class="empty-row"><td colspan="8">No incidents found</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ══════════════════════════════════════════
+             RESOURCES VIEW
+             ══════════════════════════════════════════ -->
+        <section class="view" id="view-resources" aria-label="Resource management">
+
+          <div class="filter-bar">
+            <div class="filter-group" role="group" aria-label="Filter resources">
+              <label class="sr-only" for="filter-resource-status">Filter by availability</label>
+              <select id="filter-resource-status" class="filter-select" onchange="loadResources()">
+                <option value="">All Statuses</option>
+                <option value="available">Available</option>
+                <option value="deployed">Deployed</option>
+                <option value="maintenance">Maintenance</option>
+                <option value="out_of_service">Out of Service</option>
+              </select>
+
+              <label class="sr-only" for="filter-resource-type">Filter by type</label>
+              <select id="filter-resource-type" class="filter-select" onchange="loadResources()">
+                <option value="">All Types</option>
+                <option value="ambulance">Ambulance</option>
+                <option value="fire_truck">Fire Truck</option>
+                <option value="police_vehicle">Police Vehicle</option>
+                <option value="helicopter">Helicopter</option>
+                <option value="rescue_boat">Rescue Boat</option>
+                <option value="medical_team">Medical Team</option>
+                <option value="rescue_team">Rescue Team</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('resource')">+ Add Resource</button>
+          </div>
+
+          <div class="resources-grid" id="resources-grid" role="list" aria-label="Resource units">
+            <div class="empty-state">No resources registered yet</div>
+          </div>
+
+        </section>
+
+      </div><!-- /page-body -->
+    </main>
+  </div><!-- /app-shell -->
+
+  <!-- ═══════════════════════════════════════════════
+       MODAL — REPORT INCIDENT
+       ═══════════════════════════════════════════════ -->
+  <div class="modal-overlay"
+       id="incident-modal"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="incident-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="incident-modal-title" style="font-size:14px;font-weight:700">Report New Incident</h2>
+        <button class="modal-close" onclick="closeModal('incident')" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="incident-form" onsubmit="handleIncidentSubmit(event)" novalidate>
+        <div class="form-body">
+
+          <div class="form-group full">
+            <label class="form-label" for="incident-title">Title <span class="required" aria-hidden="true">*</span></label>
+            <input class="form-control"
+                   type="text"
+                   id="incident-title"
+                   name="title"
+                   required
+                   placeholder="e.g. Major Fire at Industrial Zone" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="incident-type">Type <span class="required" aria-hidden="true">*</span></label>
+            <select class="form-control" id="incident-type" name="type" required>
+              <option value="">Select type…</option>
+              <option value="fire">Fire</option>
+              <option value="flood">Flood</option>
+              <option value="earthquake">Earthquake</option>
+              <option value="accident">Accident</option>
+              <option value="medical">Medical Emergency</option>
+              <option value="hazmat">Hazardous Material</option>
+              <option value="rescue">Search & Rescue</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="incident-severity">Severity <span class="required" aria-hidden="true">*</span></label>
+            <select class="form-control" id="incident-severity" name="severity" required>
+              <option value="">Select severity…</option>
+              <option value="critical">Critical — Life threatening</option>
+              <option value="high">High — Urgent response</option>
+              <option value="medium">Medium — Standard response</option>
+              <option value="low">Low — Monitor only</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label" for="incident-location">Location <span class="required" aria-hidden="true">*</span></label>
+            <input class="form-control"
+                   type="text"
+                   id="incident-location"
+                   name="location"
+                   required
+                   placeholder="e.g. Sector 4, Near Central Railway Station" />
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label" for="incident-description">Description <span class="required" aria-hidden="true">*</span></label>
+            <textarea class="form-control"
+                      id="incident-description"
+                      name="description"
+                      required
+                      rows="3"
+                      placeholder="Describe the situation, scale, and immediate actions taken…"></textarea>
+          </div>
+
+          <div class="form-group full">
+            <fieldset>
+              <legend class="form-label">Assign Responding Agencies</legend>
+              <div class="checkbox-group" style="margin-top:6px">
+                <label class="checkbox-item"><input type="checkbox" name="agencies" value="hospital" /> Hospital</label>
+                <label class="checkbox-item"><input type="checkbox" name="agencies" value="police" /> Police</label>
+                <label class="checkbox-item"><input type="checkbox" name="agencies" value="fire_service" /> Fire Service</label>
+                <label class="checkbox-item"><input type="checkbox" name="agencies" value="rescue_team" /> Rescue Team</label>
+                <label class="checkbox-item"><input type="checkbox" name="agencies" value="government" /> Government</label>
+              </div>
+            </fieldset>
+          </div>
+
         </div>
         <input type="hidden" id="incident-edit-id" value="" />
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" onclick="closeModal('incident')">Cancel</button>
-          <button type="submit" class="btn btn-danger btn-glow" id="incident-submit-btn">Report Incident</button>
+          <button type="submit" class="btn btn-danger" id="incident-submit-btn">Submit Report</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════ -->
-  <!-- MODAL: CREATE/EDIT RESOURCE                 -->
-  <!-- ═══════════════════════════════════════════ -->
-  <div class="modal-overlay" id="resource-modal">
+  <!-- ═══════════════════════════════════════════════
+       MODAL — REGISTER RESOURCE
+       ═══════════════════════════════════════════════ -->
+  <div class="modal-overlay"
+       id="resource-modal"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="resource-modal-title">
     <div class="modal">
       <div class="modal-header">
-        <h3 id="resource-modal-title">Register New Resource</h3>
-        <button class="modal-close" onclick="closeModal('resource')">&times;</button>
+        <h2 id="resource-modal-title" style="font-size:14px;font-weight:700">Register New Resource</h2>
+        <button class="modal-close" onclick="closeModal('resource')" aria-label="Close dialog">&times;</button>
       </div>
-      <form id="resource-form" onsubmit="handleResourceSubmit(event)">
-        <div class="form-grid">
-          <div class="form-group full-width">
-            <label for="resource-name">Name *</label>
-            <input type="text" id="resource-name" name="name" required placeholder="e.g., Ambulance Unit Alpha-3" />
+      <form id="resource-form" onsubmit="handleResourceSubmit(event)" novalidate>
+        <div class="form-body">
+
+          <div class="form-group full">
+            <label class="form-label" for="resource-name">Unit Name <span class="required" aria-hidden="true">*</span></label>
+            <input class="form-control"
+                   type="text"
+                   id="resource-name"
+                   name="name"
+                   required
+                   placeholder="e.g. Ambulance Unit Alpha-3" />
           </div>
+
           <div class="form-group">
-            <label for="resource-type">Type *</label>
-            <select id="resource-type" name="type" required>
-              <option value="">Select type...</option>
-              <option value="ambulance">🚑 Ambulance</option>
-              <option value="fire_truck">🚒 Fire Truck</option>
-              <option value="police_vehicle">🚔 Police Vehicle</option>
-              <option value="helicopter">🚁 Helicopter</option>
-              <option value="rescue_boat">🚤 Rescue Boat</option>
-              <option value="medical_team">👨‍⚕️ Medical Team</option>
-              <option value="rescue_team">🦺 Rescue Team</option>
-              <option value="other">📌 Other</option>
+            <label class="form-label" for="resource-type">Unit Type <span class="required" aria-hidden="true">*</span></label>
+            <select class="form-control" id="resource-type" name="type" required>
+              <option value="">Select type…</option>
+              <option value="ambulance">Ambulance</option>
+              <option value="fire_truck">Fire Truck</option>
+              <option value="police_vehicle">Police Vehicle</option>
+              <option value="helicopter">Helicopter</option>
+              <option value="rescue_boat">Rescue Boat</option>
+              <option value="medical_team">Medical Team</option>
+              <option value="rescue_team">Rescue Team</option>
+              <option value="other">Other</option>
             </select>
           </div>
+
           <div class="form-group">
-            <label for="resource-status">Status</label>
-            <select id="resource-status" name="status">
-              <option value="available">✅ Available</option>
-              <option value="deployed">🔄 Deployed</option>
-              <option value="maintenance">🔧 Maintenance</option>
-              <option value="out_of_service">❌ Out of Service</option>
+            <label class="form-label" for="resource-status">Current Status</label>
+            <select class="form-control" id="resource-status" name="status">
+              <option value="available">Available</option>
+              <option value="deployed">Deployed</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="out_of_service">Out of Service</option>
             </select>
           </div>
-          <div class="form-group full-width">
-            <label for="resource-agency">Agency *</label>
-            <input type="text" id="resource-agency" name="agency" required placeholder="e.g., City Fire Department" />
+
+          <div class="form-group full">
+            <label class="form-label" for="resource-agency">Responsible Agency <span class="required" aria-hidden="true">*</span></label>
+            <input class="form-control"
+                   type="text"
+                   id="resource-agency"
+                   name="agency"
+                   required
+                   placeholder="e.g. City Fire Department" />
           </div>
+
         </div>
         <input type="hidden" id="resource-edit-id" value="" />
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" onclick="closeModal('resource')">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="resource-submit-btn">Add Resource</button>
+          <button type="submit" class="btn btn-primary" id="resource-submit-btn">Register Resource</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Toast Notification Container -->
-  <div class="toast-container" id="toast-container"></div>
+  <!-- ═══════════════════════════════════════════════
+       TOAST CONTAINER
+       ═══════════════════════════════════════════════ -->
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="false"></div>
 
-  <script src="js/app.js"></script>
+  <!-- Scripts (order matters: api → ui → app) -->
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/app.js"></script>
+
 </body>
 </html>
